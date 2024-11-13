@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:pizzeria/models/Cart.dart';
 import 'package:pizzeria/models/pizza.dart';
 import 'package:pizzeria/models/pizza_data.dart';
+import 'package:pizzeria/services/pizzeria_service.dart';
 import 'package:pizzeria/ui/pizza_details.dart';
 import 'package:pizzeria/ui/share/appbar_widget.dart';
 import 'package:pizzeria/ui/share/buy_button_widget.dart';
+import 'package:pizzeria/ui/share/pizzeria_style.dart';
 
 class PizzaList extends StatefulWidget {
   final Cart _cart;
@@ -16,22 +18,42 @@ class PizzaList extends StatefulWidget {
 }
 
 class _PizzaListState extends State<PizzaList> {
-  List<Pizza> _pizzas = [];
+  late Future<List<Pizza>> _pizzas;
+  final PizzeriaService _service = PizzeriaService();
 
   @override
   void initState() {
-    _pizzas = PizzaData.buildList();
+    super.initState();
+    _pizzas = _service.fetchPizzas();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppbarWidget("Pizza list", widget._cart),
-      body: ListView.builder(
-        padding: const EdgeInsets.all(8),
-        itemCount: _pizzas.length,
-        itemBuilder: (context, index) => _buildRow(_pizzas[index]),
+      body: FutureBuilder(
+        future: _pizzas,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return _buildListView(snapshot.data!);
+          } else {
+            return Center(
+              child: Text(
+                "impossible de récupérer les données: ${snapshot.error}",
+                style: PizzeriaStyle.errorTextStyle,
+              ),
+            );
+          }
+        },
       ),
+    );
+  }
+
+  _buildListView(List<Pizza> pizzas) {
+    return ListView.builder(
+      padding: const EdgeInsets.all(8),
+      itemCount: pizzas.length,
+      itemBuilder: (context, index) => _buildRow(pizzas[index]),
     );
   }
 
@@ -44,8 +66,8 @@ class _PizzaListState extends State<PizzaList> {
           subtitle: Text(pizza.garniture),
           leading: const Icon(Icons.local_pizza),
         ),
-        Image.asset(
-          'assets/images/pizza/${pizza.image}',
+        Image.network(
+          pizza.image,
           height: 120,
           width: MediaQuery.of(context).size.width,
           fit: BoxFit.fitWidth,

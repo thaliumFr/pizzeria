@@ -25,4 +25,9 @@ class PizzeriaStyle {
 
   static final TextStyle priceTotalTextStyle =
       baseTextStyle.copyWith(fontSize: 22);
+
+  static final TextStyle errorTextStyle = baseTextStyle.copyWith(
+    color: Colors.red,
+    fontSize: 22.0,
+  );
 }

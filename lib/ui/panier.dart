@@ -70,8 +70,8 @@ class _PanierState extends State<Panier> {
   _buildCartItems(CartItem item) {
     return Row(
       children: [
-        Image.asset(
-          'assets/images/pizza/${item.pizza.image}',
+        Image.network(
+          item.pizza.image,
           height: 180,
         ),
         Column(
