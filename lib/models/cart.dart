@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:pizzeria/models/pizza.dart';
 
 class CartItem {
@@ -7,8 +8,10 @@ class CartItem {
   CartItem(this.pizza, [this.quantity = 1]);
 }
 
-class Cart {
+class Cart extends ChangeNotifier {
   final List<CartItem> _items = [];
+
+  Cart();
 
   int totalItems() => _items.length;
   CartItem getCartItem(int index) => _items[index];
@@ -25,14 +28,20 @@ class Cart {
     } else {
       _items[index].quantity++;
     }
+    notifyListeners();
   }
 
   void removeProduct(Pizza pizza) {
     int index = findCartItemIndex(pizza.id);
 
     if (index != -1) {
-      _items.removeAt(index);
+      CartItem item = _items[index];
+
+      if (--item.quantity == 0) {
+        _items.removeAt(index);
+      }
     }
+    notifyListeners();
   }
 
   double prixTotal() {

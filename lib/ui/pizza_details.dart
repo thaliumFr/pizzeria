@@ -3,6 +3,7 @@ import 'package:pizzeria/models/Cart.dart';
 import 'package:pizzeria/models/option_item.dart';
 import 'package:pizzeria/models/pizza.dart';
 import 'package:pizzeria/ui/share/appbar_widget.dart';
+import 'package:pizzeria/ui/share/bottom_navbar_widget.dart';
 import 'package:pizzeria/ui/share/buy_button_widget.dart';
 import 'package:pizzeria/ui/share/pizzeria_style.dart';
 import 'package:pizzeria/ui/share/total_widget.dart';
@@ -21,7 +22,7 @@ class _PizzaDetailsState extends State<PizzaDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppbarWidget(widget._pizza.title, widget._cart),
+      appBar: AppbarWidget(widget._pizza.title),
       body: ListView(
         padding: const EdgeInsets.all(4),
         children: [
@@ -122,7 +123,7 @@ _buildBuyButton(Pizza pizza, Cart cart) {
             SizedBox(
               width: 5,
             ),
-            BuyButtonWidget(pizza, cart),
+            BuyButtonWidget(pizza),
           ],
         ),
       ),

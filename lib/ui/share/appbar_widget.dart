@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:pizzeria/models/Cart.dart';
 import 'package:pizzeria/ui/panier.dart';
 
 class AppbarWidget extends StatelessWidget implements PreferredSizeWidget {
   final String title;
-  final Cart _cart;
 
-  const AppbarWidget(this.title, this._cart, {super.key});
+  const AppbarWidget(this.title, {super.key});
 
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
@@ -19,10 +17,11 @@ class AppbarWidget extends StatelessWidget implements PreferredSizeWidget {
         IconButton(
             onPressed: () {
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Panier(_cart),
-                  ));
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Panier(),
+                ),
+              );
             },
             icon: Icon(Icons.shopping_cart))
       ],

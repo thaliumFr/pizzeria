@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:pizzeria/main.dart';
 import 'package:pizzeria/models/Cart.dart';
 import 'package:pizzeria/models/pizza.dart';
-import 'package:pizzeria/models/pizza_data.dart';
+import 'package:provider/provider.dart';
 import 'package:pizzeria/services/pizzeria_service.dart';
 import 'package:pizzeria/ui/pizza_details.dart';
 import 'package:pizzeria/ui/share/appbar_widget.dart';
+import 'package:pizzeria/ui/share/bottom_navbar_widget.dart';
 import 'package:pizzeria/ui/share/buy_button_widget.dart';
 import 'package:pizzeria/ui/share/pizzeria_style.dart';
 
 class PizzaList extends StatefulWidget {
-  final Cart _cart;
-
-  const PizzaList(this._cart, {super.key});
+  const PizzaList({super.key});
 
   @override
   State<PizzaList> createState() => _PizzaListState();
@@ -30,12 +30,12 @@ class _PizzaListState extends State<PizzaList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppbarWidget("Pizza list", widget._cart),
+      appBar: AppbarWidget("Pizza list"),
       body: FutureBuilder(
         future: _pizzas,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return _buildListView(snapshot.data!);
+            return _buildListView(snapshot.data!, context);
           } else {
             return Center(
               child: Text(
@@ -49,11 +49,11 @@ class _PizzaListState extends State<PizzaList> {
     );
   }
 
-  _buildListView(List<Pizza> pizzas) {
+  _buildListView(List<Pizza> pizzas, BuildContext context) {
     return ListView.builder(
       padding: const EdgeInsets.all(8),
       itemCount: pizzas.length,
-      itemBuilder: (context, index) => _buildRow(pizzas[index]),
+      itemBuilder: (context, index) => _buildRow(pizzas[index], context),
     );
   }
 
@@ -80,7 +80,8 @@ class _PizzaListState extends State<PizzaList> {
     );
   }
 
-  _buildRow(Pizza pizza) {
+  _buildRow(Pizza pizza, BuildContext context) {
+    Cart cart = context.watch<Cart>();
     return Card(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
@@ -96,13 +97,13 @@ class _PizzaListState extends State<PizzaList> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => PizzaDetails(pizza, widget._cart),
+                  builder: (context) => PizzaDetails(pizza, cart),
                 ),
               );
             },
             child: _buildPizzaDetails(pizza),
           ),
-          BuyButtonWidget(pizza, widget._cart)
+          BuyButtonWidget(pizza)
         ],
       ),
     );

@@ -1,22 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:pizzeria/models/Cart.dart';
-import 'package:pizzeria/ui/share/pizzeria_style.dart';
+import 'package:pizzeria/models/cart.dart';
+import 'package:pizzeria/ui/share/bottom_navbar_widget.dart';
+import 'package:pizzeria/ui/share/cart_list_widget.dart';
+import 'package:pizzeria/ui/share/cart_total_widget.dart';
+import 'package:provider/provider.dart';
 
-class Panier extends StatefulWidget {
-  final Cart _cart;
-
-  const Panier(this._cart, {super.key});
-
-  @override
-  State<Panier> createState() => _PanierState();
-}
-
-class _PanierState extends State<Panier> {
-  var format = NumberFormat("###.##€");
+class Panier extends StatelessWidget {
+  const Panier({super.key});
 
   @override
   Widget build(BuildContext context) {
+    Cart cart = Provider.of<Cart>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Panier"),
@@ -24,100 +18,14 @@ class _PanierState extends State<Panier> {
       body: Column(
         children: [
           Expanded(
-            child: ListView.builder(
-              itemCount: widget._cart.totalItems(),
-              itemBuilder: (context, index) =>
-                  _buildCartItems(widget._cart.getCartItem(index)),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CartList(),
             ),
           ),
-          Table(
-            children: [
-              TableRow(children: [
-                Container(
-                  padding: EdgeInsets.only(left: 50),
-                ),
-                Text("TOTAL HT"),
-                Text(format.format(widget._cart.prixTotal()))
-              ]),
-              TableRow(children: [
-                Container(
-                  padding: EdgeInsets.only(left: 50),
-                ),
-                Text("TVA"),
-                Text(format.format(widget._cart.prixTotal() * 0.1))
-              ]),
-              TableRow(children: [
-                Container(
-                  padding: EdgeInsets.only(left: 50),
-                ),
-                Text("TOTAL TTC"),
-                Text(format.format(widget._cart.prixTotal() * 1.1))
-              ])
-            ],
-          ),
-          Container(
-            child: ElevatedButton(
-                onPressed: () {
-                  print("Clear");
-                },
-                child: Text('Valider')),
-          )
+          CartTotal()
         ],
       ),
-    );
-  }
-
-  _buildCartItems(CartItem item) {
-    return Row(
-      children: [
-        Image.network(
-          item.pizza.image,
-          height: 180,
-        ),
-        Column(
-          children: [
-            Text(
-              item.pizza.title,
-              style: PizzeriaStyle.headerTextStyle,
-            ),
-            Row(
-              children: [
-                Text(
-                  '${item.pizza.total} €',
-                  style: PizzeriaStyle.subPriceTotalTextStyle,
-                ),
-                Row(
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.remove),
-                      onPressed: () {
-                        setState(() {
-                          item.quantity--;
-                        });
-                        print("${item.quantity}");
-                      },
-                    ),
-                    Text('${item.quantity}'),
-                    IconButton(
-                      icon: const Icon(Icons.add),
-                      onPressed: () {
-                        setState(() {
-                          item.quantity++;
-                        });
-                        print("${item.quantity}");
-                      },
-                    ),
-                  ],
-                )
-              ],
-            ),
-            Text(
-              'Sous-Total: ${item.quantity * item.pizza.total} €',
-              style: PizzeriaStyle.priceTotalTextStyle,
-            )
-          ],
-        )
-      ],
     );
   }
 }

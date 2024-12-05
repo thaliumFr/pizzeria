@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pizzeria/models/Cart.dart';
 import 'package:pizzeria/models/menu.dart';
-import 'dart:ui';
-
+import 'package:pizzeria/models/pizza.dart';
+import 'package:pizzeria/ui/panier.dart';
+import 'package:pizzeria/ui/share/bottom_navbar_widget.dart';
+import 'package:provider/provider.dart';
 import 'package:pizzeria/ui/pizza_list.dart';
 import 'package:pizzeria/ui/share/appbar_widget.dart';
 
@@ -10,23 +12,37 @@ void main() {
   runApp(MainApp());
 }
 
+// void main() {
+//   runApp(
+//     ChangeNotifierProvider(
+//       create: (context) => Cart(),
+//       child: MainApp(),
+//     ),
+//   );
+// }
+
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: "Pizzéria",
-        theme: ThemeData(primarySwatch: Colors.blue),
-        home: MyHomePage(title: "Notre Pizzéria"));
+      title: "Pizzéria",
+      theme: ThemeData(primarySwatch: Colors.blue),
+      debugShowCheckedModeBanner: false,
+      home: MyHomePage(title: "Notre Pizzéria"),
+      routes: {
+        '/profil': (context) => Panier(),
+        '/panier': (context) => Panier(),
+      },
+    );
   }
 }
 
 class MyHomePage extends StatelessWidget {
   final String title;
-  final Cart _cart;
 
-  MyHomePage({required this.title, super.key}) : _cart = Cart();
+  MyHomePage({required this.title, super.key});
 
   final _menus = [
     Menu(1, 'Entrées', 'entree.png', Colors.lightGreen),
@@ -37,19 +53,26 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppbarWidget(title, _cart),
-      body: Center(
+    return ChangeNotifierProvider<Cart>(
+      create: (_) => Cart(),
+      child: Consumer<Cart>(
+        builder: (context, provider, child) => Scaffold(
+          appBar: AppbarWidget(title),
+          body: Text("cart.totalItems().toString()"),
+          bottomNavigationBar: BottomNavbarWidget(2),
+          /*Center(
         child: ListView.builder(
           itemCount: _menus.length,
           itemBuilder: (context, index) => InkWell(
             onTap: () {
               switch (_menus[index].type) {
                 case 2:
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => PizzaList(_cart)));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => PizzaList()));
+                  break;
+                case 3:
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => PizzaList()));
                   break;
                 default:
               }
@@ -57,6 +80,8 @@ class MyHomePage extends StatelessWidget {
             child: _buildRow(_menus[index]),
           ),
           itemExtent: 180,
+        ),
+      ),*/
         ),
       ),
     );
