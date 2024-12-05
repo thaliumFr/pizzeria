@@ -112,20 +112,7 @@ _buildBuyButton(Pizza pizza, Cart cart) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.end,
     children: [
-      ElevatedButton(
-        onPressed: () {
-          debugPrint("commander pizza");
-        },
-        child: Row(
-          children: [
-            Icon(Icons.shopping_cart),
-            SizedBox(
-              width: 5,
-            ),
-            BuyButtonWidget(pizza, cart),
-          ],
-        ),
-      ),
+      BuyButtonWidget(pizza, cart),
     ],
   );
 }
