@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pizzeria/models/Cart.dart';
 import 'package:pizzeria/models/menu.dart';
-import 'dart:ui';
 
 import 'package:pizzeria/ui/pizza_list.dart';
 import 'package:pizzeria/ui/share/appbar_widget.dart';

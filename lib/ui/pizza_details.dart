@@ -114,7 +114,7 @@ _buildBuyButton(Pizza pizza, Cart cart) {
     children: [
       ElevatedButton(
         onPressed: () {
-          print("commander pizza");
+          debugPrint("commander pizza");
         },
         child: Row(
           children: [

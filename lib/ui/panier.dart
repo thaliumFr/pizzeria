@@ -55,13 +55,11 @@ class _PanierState extends State<Panier> {
               ])
             ],
           ),
-          Container(
-            child: ElevatedButton(
-                onPressed: () {
-                  print("Clear");
-                },
-                child: Text('Valider')),
-          )
+          ElevatedButton(
+              onPressed: () {
+                debugPrint("Clear");
+              },
+              child: Text('Valider')),
         ],
       ),
     );
@@ -94,7 +92,7 @@ class _PanierState extends State<Panier> {
                         setState(() {
                           item.quantity--;
                         });
-                        print("${item.quantity}");
+                        debugPrint("${item.quantity}");
                       },
                     ),
                     Text('${item.quantity}'),
@@ -104,7 +102,7 @@ class _PanierState extends State<Panier> {
                         setState(() {
                           item.quantity++;
                         });
-                        print("${item.quantity}");
+                        debugPrint("${item.quantity}");
                       },
                     ),
                   ],
