@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pizzeria/models/Cart.dart';
+import 'package:pizzeria/models/cart.dart';
 import 'package:pizzeria/ui/panier.dart';
 
 class AppbarWidget extends StatelessWidget implements PreferredSizeWidget {

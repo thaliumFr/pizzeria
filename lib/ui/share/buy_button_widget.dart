@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pizzeria/models/Cart.dart';
+import 'package:pizzeria/models/cart.dart';
 import 'package:pizzeria/models/pizza.dart';
 
 class BuyButtonWidget extends StatelessWidget {
@@ -15,7 +15,7 @@ class BuyButtonWidget extends StatelessWidget {
       children: [
         ElevatedButton(
           onPressed: () {
-            print('commander pizza');
+            _cart.showCart();
             _cart.addProduct(_pizza);
           },
           style: ButtonStyle(

@@ -1,31 +1,44 @@
 import 'package:flutter/material.dart';
-import 'package:pizzeria/models/Cart.dart';
+import 'package:pizzeria/models/cart.dart';
 import 'package:pizzeria/models/menu.dart';
+import 'package:pizzeria/ui/panier.dart';
 
 import 'package:pizzeria/ui/pizza_list.dart';
 import 'package:pizzeria/ui/share/appbar_widget.dart';
+import 'package:pizzeria/ui/share/bottom_navbar_widget.dart';
 
 void main() {
   runApp(MainApp());
 }
 
 class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+  final Cart _cart;
+
+  MainApp({super.key}) : _cart = Cart();
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: "Pizzéria",
-        theme: ThemeData(primarySwatch: Colors.blue),
-        home: MyHomePage(title: "Notre Pizzéria"));
+      title: "Pizzéria",
+      theme: ThemeData(primarySwatch: Colors.blue),
+      debugShowCheckedModeBanner: false,
+      home: MyHomePage(
+        title: "Notre Pizzéria",
+        cart: _cart,
+      ),
+      routes: {
+        '/profil': (context) => Panier(_cart),
+        '/panier': (context) => Panier(_cart),
+      },
+    );
   }
 }
 
 class MyHomePage extends StatelessWidget {
   final String title;
-  final Cart _cart;
+  final Cart cart;
 
-  MyHomePage({required this.title, super.key}) : _cart = Cart();
+  MyHomePage({required this.title, required this.cart, super.key});
 
   final _menus = [
     Menu(1, 'Entrées', 'entree.png', Colors.lightGreen),
@@ -37,7 +50,8 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppbarWidget(title, _cart),
+      appBar: AppbarWidget(title, cart),
+      bottomNavigationBar: BottomNavbarWidget(0, cart),
       body: Center(
         child: ListView.builder(
           itemCount: _menus.length,
@@ -45,10 +59,8 @@ class MyHomePage extends StatelessWidget {
             onTap: () {
               switch (_menus[index].type) {
                 case 2:
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => PizzaList(_cart)));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => PizzaList(cart)));
                   break;
                 default:
               }

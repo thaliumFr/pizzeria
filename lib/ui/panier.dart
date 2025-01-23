@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:pizzeria/models/Cart.dart';
+import 'package:pizzeria/models/cart.dart';
+import 'package:pizzeria/ui/share/bottom_navbar_widget.dart';
 import 'package:pizzeria/ui/share/pizzeria_style.dart';
 
 class Panier extends StatefulWidget {
@@ -21,6 +22,7 @@ class _PanierState extends State<Panier> {
       appBar: AppBar(
         title: const Text("Panier"),
       ),
+      bottomNavigationBar: BottomNavbarWidget(2, widget._cart),
       body: Column(
         children: [
           Expanded(
@@ -75,7 +77,7 @@ class _PanierState extends State<Panier> {
         Column(
           children: [
             Text(
-              item.pizza.title,
+              "${item.pizza.title} - ${item.pizza.hashCode}",
               style: PizzeriaStyle.headerTextStyle,
             ),
             Row(
@@ -90,7 +92,7 @@ class _PanierState extends State<Panier> {
                       icon: const Icon(Icons.remove),
                       onPressed: () {
                         setState(() {
-                          item.quantity--;
+                          widget._cart.removeProduct(item.pizza);
                         });
                         debugPrint("${item.quantity}");
                       },
@@ -100,7 +102,7 @@ class _PanierState extends State<Panier> {
                       icon: const Icon(Icons.add),
                       onPressed: () {
                         setState(() {
-                          item.quantity++;
+                          widget._cart.addProduct(item.pizza);
                         });
                         debugPrint("${item.quantity}");
                       },

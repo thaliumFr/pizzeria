@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:pizzeria/models/Cart.dart';
+import 'package:pizzeria/models/cart.dart';
 import 'package:pizzeria/models/pizza.dart';
-import 'package:pizzeria/models/pizza_data.dart';
 import 'package:pizzeria/services/pizzeria_service.dart';
 import 'package:pizzeria/ui/pizza_details.dart';
 import 'package:pizzeria/ui/share/appbar_widget.dart';
+import 'package:pizzeria/ui/share/bottom_navbar_widget.dart';
 import 'package:pizzeria/ui/share/buy_button_widget.dart';
 import 'package:pizzeria/ui/share/pizzeria_style.dart';
 
@@ -31,6 +31,7 @@ class _PizzaListState extends State<PizzaList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppbarWidget("Pizza list", widget._cart),
+      bottomNavigationBar: BottomNavbarWidget(0, widget._cart),
       body: FutureBuilder(
         future: _pizzas,
         builder: (context, snapshot) {

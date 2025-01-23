@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:pizzeria/models/Cart.dart';
+import 'package:pizzeria/models/cart.dart';
 import 'package:pizzeria/models/option_item.dart';
 import 'package:pizzeria/models/pizza.dart';
 import 'package:pizzeria/ui/share/appbar_widget.dart';
+import 'package:pizzeria/ui/share/bottom_navbar_widget.dart';
 import 'package:pizzeria/ui/share/buy_button_widget.dart';
 import 'package:pizzeria/ui/share/pizzeria_style.dart';
 import 'package:pizzeria/ui/share/total_widget.dart';
@@ -22,6 +23,7 @@ class _PizzaDetailsState extends State<PizzaDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppbarWidget(widget._pizza.title, widget._cart),
+      bottomNavigationBar: BottomNavbarWidget(0, widget._cart),
       body: ListView(
         padding: const EdgeInsets.all(4),
         children: [

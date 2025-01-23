@@ -37,7 +37,37 @@ class Pizza {
     OptionItem(1, "Sauce maison", supplement: 2)
   ];
 
+  @override
+  bool operator ==(dynamic other) {
+    if (other is! Pizza) return false;
+    if (id != other.id) return false;
+    if (title != other.title) return false;
+    if (pate != other.pate) return false;
+    if (sauce != other.sauce) return false;
+    if (taille != other.taille) return false;
+    if (hashCode != other.hashCode) return false;
+    return true;
+  }
+
+  @override
+  int get hashCode {
+    var result = id;
+    result += pate * 10;
+    result += taille * 100;
+    result += sauce * 1000;
+    return result;
+  }
+
   Pizza(this.id, this.title, this.garniture, this.image, this.price);
+  Pizza.clone(Pizza pizza)
+      : id = pizza.id,
+        title = pizza.title,
+        garniture = pizza.garniture,
+        image = pizza.image,
+        price = pizza.price,
+        pate = pizza.pate,
+        taille = pizza.taille,
+        sauce = pizza.sauce;
 
   Pizza.fromJson(Map<String, dynamic> json)
       : id = json['id'],
